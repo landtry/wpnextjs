@@ -9,8 +9,9 @@ import { Pricing } from '@/components/Pricing'
 import { PrimaryFeatures } from '@/components/PrimaryFeatures'
 import { Reviews } from '@/components/Reviews'
 import { SecondaryFeatures } from '@/components/SecondaryFeatures'
+import { GET_HOME_DATA, getPageData } from '@/services/api'
 
-export default function Home() {
+export default function Home(home) {
   return (
     <>
       <Head>
@@ -22,15 +23,24 @@ export default function Home() {
       </Head>
       <Header />
       <main>
-        <Hero />
-        <PrimaryFeatures />
-        <SecondaryFeatures />
-        <CallToAction />
-        <Reviews />
-        <Pricing />
-        <Faqs />
+        <Hero hero={home.hero} />
+        <PrimaryFeatures primaryFeatures={home.primaryFeatures} />
+        <SecondaryFeatures secondaryFeatures={home.secondaryFeatures} />
+        <CallToAction callToAction={home.callToAction} />
+        <Reviews reviews={home.reviews} />
+        <Pricing pricing={home.pricing} />
+        <Faqs faqs={home.faqs} />
       </main>
       <Footer />
     </>
   )
+}
+
+export const getStaticProps = async () => {
+  const home = await getPageData('home', GET_HOME_DATA)
+
+  return {
+    props: home,
+    revalidate: 10,
+  }
 }

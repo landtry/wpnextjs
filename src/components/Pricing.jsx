@@ -6,65 +6,65 @@ import { Button } from '@/components/Button'
 import { Container } from '@/components/Container'
 import { Logomark } from '@/components/Logo'
 
-const plans = [
-  {
-    name: 'Starter',
-    featured: false,
-    price: { Monthly: '$0', Annually: '$0' },
-    description:
-      'You’re new to investing but want to do it right. Get started for free.',
-    button: {
-      label: 'Get started for free',
-      href: '/register',
-    },
-    features: [
-      'Commission-free trading',
-      'Multi-layered encryption',
-      'One tip every day',
-      'Invest up to $1,500 each month',
-    ],
-    logomarkClassName: 'fill-gray-300',
-  },
-  {
-    name: 'Investor',
-    featured: false,
-    price: { Monthly: '$7', Annually: '$70' },
-    description:
-      'You’ve been investing for a while. Invest more and grow your wealth faster.',
-    button: {
-      label: 'Subscribe',
-      href: '/register',
-    },
-    features: [
-      'Commission-free trading',
-      'Multi-layered encryption',
-      'One tip every hour',
-      'Invest up to $15,000 each month',
-      'Basic transaction anonymization',
-    ],
-    logomarkClassName: 'fill-gray-500',
-  },
-  {
-    name: 'VIP',
-    featured: true,
-    price: { Monthly: '$199', Annually: '$1,990' },
-    description:
-      'You’ve got a huge amount of assets but it’s not enough. To the moon.',
-    button: {
-      label: 'Subscribe',
-      href: '/register',
-    },
-    features: [
-      'Commission-free trading',
-      'Multi-layered encryption',
-      'Real-time tip notifications',
-      'No investment limits',
-      'Advanced transaction anonymization',
-      'Automated tax-loss harvesting',
-    ],
-    logomarkClassName: 'fill-cyan-500',
-  },
-]
+// const plans = [
+//   {
+//     name: 'Starter',
+//     featured: false,
+//     price: { Monthly: '$0', Annually: '$0' },
+//     description:
+//       'You’re new to investing but want to do it right. Get started for free.',
+//     button: {
+//       label: 'Get started for free',
+//       href: '/register',
+//     },
+//     features: [
+//       'Commission-free trading',
+//       'Multi-layered encryption',
+//       'One tip every day',
+//       'Invest up to $1,500 each month',
+//     ],
+//     logomarkClassName: 'fill-gray-300',
+//   },
+//   {
+//     name: 'Investor',
+//     featured: false,
+//     price: { Monthly: '$7', Annually: '$70' },
+//     description:
+//       'You’ve been investing for a while. Invest more and grow your wealth faster.',
+//     button: {
+//       label: 'Subscribe',
+//       href: '/register',
+//     },
+//     features: [
+//       'Commission-free trading',
+//       'Multi-layered encryption',
+//       'One tip every hour',
+//       'Invest up to $15,000 each month',
+//       'Basic transaction anonymization',
+//     ],
+//     logomarkClassName: 'fill-gray-500',
+//   },
+//   {
+//     name: 'VIP',
+//     featured: true,
+//     price: { Monthly: '$199', Annually: '$1,990' },
+//     description:
+//       'You’ve got a huge amount of assets but it’s not enough. To the moon.',
+//     button: {
+//       label: 'Subscribe',
+//       href: '/register',
+//     },
+//     features: [
+//       'Commission-free trading',
+//       'Multi-layered encryption',
+//       'Real-time tip notifications',
+//       'No investment limits',
+//       'Advanced transaction anonymization',
+//       'Automated tax-loss harvesting',
+//     ],
+//     logomarkClassName: 'fill-cyan-500',
+//   },
+// ]
 
 function CheckIcon(props) {
   return (
@@ -119,8 +119,8 @@ function Plan({
           featured ? 'text-white' : 'text-gray-900'
         )}
       >
-        {price.Monthly === price.Annually ? (
-          price.Monthly
+        {price.monthly === price.annually ? (
+          price.monthly
         ) : (
           <>
             <span
@@ -131,7 +131,7 @@ function Plan({
                   'pointer-events-none translate-x-6 select-none opacity-0'
               )}
             >
-              {price.Monthly}
+              {price.monthly}
             </span>
             <span
               aria-hidden={activePeriod === 'Monthly'}
@@ -141,7 +141,7 @@ function Plan({
                   'pointer-events-none -translate-x-6 select-none opacity-0'
               )}
             >
-              {price.Annually}
+              {price.annually}
             </span>
           </>
         )}
@@ -165,31 +165,31 @@ function Plan({
           )}
         >
           {features.map((feature) => (
-            <li key={feature} className="flex py-2">
+            <li key={feature.feature} className="flex py-2">
               <CheckIcon
                 className={clsx(
                   'h-6 w-6 flex-none',
                   featured ? 'text-white' : 'text-cyan-500'
                 )}
               />
-              <span className="ml-4">{feature}</span>
+              <span className="ml-4">{feature.feature}</span>
             </li>
           ))}
         </ul>
       </div>
       <Button
-        href={button.href}
+        href={button.url}
         color={featured ? 'cyan' : 'gray'}
         className="mt-6"
         aria-label={`Get started with the ${name} plan for ${price}`}
       >
-        {button.label}
+        {button.title}
       </Button>
     </section>
   )
 }
 
-export function Pricing() {
+export function Pricing({ pricing }) {
   let [activePeriod, setActivePeriod] = useState('Monthly')
 
   return (
@@ -204,12 +204,9 @@ export function Pricing() {
             id="pricing-title"
             className="text-3xl font-medium tracking-tight text-gray-900"
           >
-            Flat pricing, no management fees.
+            {pricing.heading}
           </h2>
-          <p className="mt-2 text-lg text-gray-600">
-            Whether you’re one person trying to get ahead or a big firm trying
-            to take over the world, we’ve got a plan for you.
-          </p>
+          <p className="mt-2 text-lg text-gray-600">{pricing.body}</p>
         </div>
 
         <div className="mt-8 flex justify-center">
@@ -259,7 +256,7 @@ export function Pricing() {
         </div>
 
         <div className="mx-auto mt-16 grid max-w-2xl grid-cols-1 items-start gap-x-8 gap-y-10 sm:mt-20 lg:max-w-none lg:grid-cols-3">
-          {plans.map((plan) => (
+          {pricing.plans.map((plan) => (
             <Plan key={plan.name} {...plan} activePeriod={activePeriod} />
           ))}
         </div>

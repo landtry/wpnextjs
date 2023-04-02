@@ -4,6 +4,9 @@ const nextConfig = {
   experimental: {
     scrollRestoration: true,
   },
+  images: {
+    domains: ['wpnextjs.local'],
+  },
 }
 
 module.exports = nextConfig

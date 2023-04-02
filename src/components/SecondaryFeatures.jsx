@@ -1,6 +1,7 @@
 import { useId } from 'react'
 
 import { Container } from '@/components/Container'
+import Image from 'next/image'
 
 const features = [
   {
@@ -186,7 +187,7 @@ function DeviceChartIcon(props) {
   )
 }
 
-export function SecondaryFeatures() {
+export function SecondaryFeatures({ secondaryFeatures }) {
   return (
     <section
       id="secondary-features"
@@ -196,23 +197,26 @@ export function SecondaryFeatures() {
       <Container>
         <div className="mx-auto max-w-2xl sm:text-center">
           <h2 className="text-3xl font-medium tracking-tight text-gray-900">
-            Now is the time to build your portfolio.
+            {secondaryFeatures.heading}
           </h2>
-          <p className="mt-2 text-lg text-gray-600">
-            With typical market returns, you have to start young to secure your
-            future. With Pocket, it’s never too late to build your nest egg.
-          </p>
+          <p className="mt-2 text-lg text-gray-600">{secondaryFeatures.body}</p>
         </div>
         <ul
           role="list"
           className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-6 text-sm sm:mt-20 sm:grid-cols-2 md:gap-y-10 lg:max-w-none lg:grid-cols-3"
         >
-          {features.map((feature) => (
+          {secondaryFeatures.list.map((feature) => (
             <li
               key={feature.name}
               className="rounded-2xl border border-gray-200 p-8"
             >
-              <feature.icon className="h-8 w-8" />
+              <Image
+                className="h-8 w-8"
+                src={feature.icon.sourceUrl}
+                width="8"
+                height="8"
+                alt="icon"
+              />
               <h3 className="mt-6 font-semibold text-gray-900">
                 {feature.name}
               </h3>
