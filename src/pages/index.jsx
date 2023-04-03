@@ -9,7 +9,8 @@ import { Pricing } from '@/components/Pricing'
 import { PrimaryFeatures } from '@/components/PrimaryFeatures'
 import { Reviews } from '@/components/Reviews'
 import { SecondaryFeatures } from '@/components/SecondaryFeatures'
-import { GET_HOME_DATA, getPageData } from '@/services/api'
+import { getPageData } from '@/services/api'
+import { GET_HOME_PAGE } from '@/queries/pages'
 
 export default function Home(home) {
   return (
@@ -37,7 +38,7 @@ export default function Home(home) {
 }
 
 export const getStaticProps = async () => {
-  const home = await getPageData('home', GET_HOME_DATA)
+  const home = await getPageData('home', GET_HOME_PAGE)
 
   return {
     props: home,
