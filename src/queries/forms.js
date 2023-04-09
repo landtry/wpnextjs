@@ -80,6 +80,7 @@ export const GET_SIGN_UP_FORM = gql`
       edges {
         node {
           id
+          formId
           title
           formFields(first: 500) {
             edges {
@@ -107,4 +108,17 @@ export const GET_SIGN_UP_FORM = gql`
   ${EMAIL_FIELD_FIELDS}
   ${PASSWORD_FIELD_FIELDS}
   ${SELECT_FIELD_FIELDS}
+`
+
+export const SUBMIT_SIGN_UP_FORM = gql`
+  mutation SubmitForm($formID: ID!, $fieldValues: [FieldValuesInput]) {
+    submitGfForm(input: { id: $formID, fieldValues: $fieldValues }) {
+      confirmation {
+        message
+      }
+      errors {
+        message
+      }
+    }
+  }
 `

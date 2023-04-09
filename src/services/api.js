@@ -15,3 +15,11 @@ export async function getGFormData(formID, formQuery) {
   })
   return data?.gfForms.edges[0].node
 }
+
+export async function submitGFormData(formID, formQuery, formFields) {
+  const { data } = await apolloClient.mutate({
+    mutation: formQuery,
+    variables: { formID, formFields },
+  })
+  return data?.gfForms.edges[0].node
+}
