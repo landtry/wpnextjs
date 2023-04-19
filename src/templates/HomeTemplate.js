@@ -9,10 +9,9 @@ import { Pricing } from '@/components/Pricing'
 import { PrimaryFeatures } from '@/components/PrimaryFeatures'
 import { Reviews } from '@/components/Reviews'
 import { SecondaryFeatures } from '@/components/SecondaryFeatures'
-import { getPageTemplateData } from '@/services/api'
 
-export default function Home({ template }) {
-  const { home } = template
+export default function HomeTemplate({ home }) {
+  console.log(JSON.stringify({ home }), 'home template')
   return (
     <>
       <Head>
@@ -38,13 +37,4 @@ export default function Home({ template }) {
       <Footer />
     </>
   )
-}
-
-export const getStaticProps = async () => {
-  const pageData = await getPageTemplateData('home')
-
-  return {
-    props: pageData,
-    revalidate: 10,
-  }
 }
