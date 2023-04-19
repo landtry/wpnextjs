@@ -30,45 +30,75 @@ export const HOME_TEMPLATE_FIELDS = gql`
   fragment HomeTemplateFields on Template_Home {
     home {
       hero {
-        headingLine1
-        headingLine2
-        bgImageDesktop {
-          sourceUrl
+        body
+        heading
+      }
+      primaryFeatures {
+        heading
+        body
+        list {
+          body
+          heading
         }
-        bgImageMobile {
-          sourceUrl
+      }
+      secondaryFeatures {
+        heading
+        body
+        list {
+          name
+          description
+          icon {
+            sourceUrl
+          }
         }
-        blurb
-        cta {
+      }
+      callToAction {
+        heading
+        body
+        link {
           title
           url
         }
       }
-      content1 {
-        blurb
+      reviews {
         heading
-        image1 {
-          sourceUrl
-        }
-        image2 {
-          sourceUrl
-        }
-        image3 {
-          sourceUrl
-        }
-        cta {
+        body
+        reviews {
           title
-          url
+          body
+          author
+          rating
         }
       }
-      cta {
+      pricing {
         heading
-        bgImage {
-          sourceUrl
+        body
+        plans {
+          name
+          featured
+          price {
+            monthly
+            annually
+          }
+          description
+          button {
+            title
+            url
+          }
+          features {
+            feature
+          }
+          logomarkClassName
         }
-        button {
-          title
-          url
+      }
+      faqs {
+        heading
+        body
+        columns {
+          faqs {
+            answer
+            question
+          }
         }
       }
     }
