@@ -1,47 +1,26 @@
-import Head from 'next/head'
+import TemplateSwitcher from '@/components/TemplateSwitcher'
+import { getMenuData, getPageTemplateData } from '@/services/api'
+import { createContext } from 'react'
 
-import { CallToAction } from '@/components/CallToAction'
-import { Faqs } from '@/components/Faqs'
-import { Footer } from '@/components/Footer'
-import { Header } from '@/components/Header'
-import { Hero } from '@/components/Hero'
-import { Pricing } from '@/components/Pricing'
-import { PrimaryFeatures } from '@/components/PrimaryFeatures'
-import { Reviews } from '@/components/Reviews'
-import { SecondaryFeatures } from '@/components/SecondaryFeatures'
-import { getPageData } from '@/services/api'
-import { GET_HOME_PAGE } from '@/queries/pages'
+export const HomeContext = createContext({})
 
-export default function Home(home) {
+export default function Home({ pageData }) {
   return (
-    <>
-      <Head>
-        <title>Pocket - Invest at the perfect time.</title>
-        <meta
-          name="description"
-          content="By leveraging insights from our network of industry insiders, you’ll know exactly when to buy to maximize profit, and exactly when to sell to avoid painful losses."
-        />
-      </Head>
-      <Header />
-      <main>
-        <Hero hero={home.hero} />
-        <PrimaryFeatures primaryFeatures={home.primaryFeatures} />
-        <SecondaryFeatures secondaryFeatures={home.secondaryFeatures} />
-        <CallToAction callToAction={home.callToAction} />
-        <Reviews reviews={home.reviews} />
-        <Pricing pricing={home.pricing} />
-        <Faqs faqs={home.faqs} />
-      </main>
-      <Footer />
-    </>
+    <HomeContext.Provider value={pageData}>
+      <TemplateSwitcher />
+    </HomeContext.Provider>
   )
 }
 
 export const getStaticProps = async () => {
-  const home = await getPageData('home', GET_HOME_PAGE)
+  const primaryNavData = await getMenuData('primary-navigation')
+  const footerNavData = await getMenuData('footer-navigation')
+  const templateData = await getPageTemplateData('/')
+
+  const pageData = { ...templateData, primaryNavData, footerNavData }
 
   return {
-    props: home,
+    props: { pageData },
     revalidate: 10,
   }
 }
