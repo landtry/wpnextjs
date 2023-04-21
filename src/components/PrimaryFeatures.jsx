@@ -18,6 +18,7 @@ import {
   TransistorLogo,
   TupleLogo,
 } from '@/components/StockLogos'
+import { usePageContext } from '@/hooks/usePageContext'
 
 const MotionAppScreenHeader = motion(AppScreen.Header)
 const MotionAppScreenBody = motion(AppScreen.Body)
@@ -539,7 +540,10 @@ function FeaturesMobile() {
   )
 }
 
-export function PrimaryFeatures({ primaryFeatures }) {
+export function PrimaryFeatures() {
+  const pageData = usePageContext()
+  const primaryFeatures = pageData.template.home.primaryFeatures
+
   return (
     <section
       id="features"

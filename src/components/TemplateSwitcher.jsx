@@ -1,6 +1,5 @@
 import { usePageContext } from '@/hooks/usePageContext'
-import HomeTemplate from '@/templates/HomeTemplate'
-import UpcomingEventsTemplate from '@/templates/UpcomingEventsTemplate'
+import HomeTemplate from '@/components/templates/HomeTemplate'
 
 export default function TemplateSwitcher() {
   const pageData = usePageContext()
@@ -9,8 +8,7 @@ export default function TemplateSwitcher() {
   switch (templateName) {
     case 'Home':
       return <HomeTemplate />
-    case 'Upcoming Events':
-      return <UpcomingEventsTemplate />
+
     default:
       // return <HomeTemplate home={pageData.home} />
       return

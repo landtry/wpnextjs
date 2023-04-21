@@ -16,6 +16,8 @@ import logoForbes from '@/images/logos/forbes.svg'
 import logoHuffpost from '@/images/logos/huffpost.svg'
 import logoTechcrunch from '@/images/logos/techcrunch.svg'
 import logoWired from '@/images/logos/wired.svg'
+import { usePageContext } from '@/hooks/usePageContext'
+import ButtonNew from './buttons/ButtonNew'
 
 function BackgroundIllustration(props) {
   let id = useId()
@@ -334,7 +336,10 @@ function AppDemo() {
   )
 }
 
-export function Hero({ hero }) {
+export function Hero() {
+  const pageData = usePageContext()
+  const hero = pageData.template.home.hero
+
   return (
     <div className="overflow-hidden py-20 sm:py-32 lg:pb-32 xl:pb-36">
       <Container>
@@ -344,6 +349,7 @@ export function Hero({ hero }) {
               {hero.heading}
             </h1>
             <p className="mt-6 text-lg text-gray-600">{hero.body}</p>
+            {/* <ButtonNew>Test</ButtonNew> */}
             <div className="mt-8 flex flex-wrap gap-x-6 gap-y-4">
               <AppStoreLink />
               <Button

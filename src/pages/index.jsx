@@ -1,6 +1,6 @@
+import { createContext } from 'react'
 import TemplateSwitcher from '@/components/TemplateSwitcher'
 import { getMenuData, getPageTemplateData } from '@/services/api'
-import { createContext } from 'react'
 
 export const HomeContext = createContext({})
 

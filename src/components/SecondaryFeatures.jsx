@@ -2,6 +2,7 @@ import { useId } from 'react'
 
 import { Container } from '@/components/Container'
 import Image from 'next/image'
+import { usePageContext } from '@/hooks/usePageContext'
 
 const features = [
   {
@@ -187,7 +188,10 @@ function DeviceChartIcon(props) {
   )
 }
 
-export function SecondaryFeatures({ secondaryFeatures }) {
+export function SecondaryFeatures() {
+  const pageData = usePageContext()
+  const secondaryFeatures = pageData.template.home.secondaryFeatures
+
   return (
     <section
       id="secondary-features"

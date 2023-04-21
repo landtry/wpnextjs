@@ -7,6 +7,7 @@ import { TextField } from '@/components/Fields'
 import { Logomark } from '@/components/Logo'
 import { NavLinks } from '@/components/NavLinks'
 import qrCode from '@/images/qr-code.svg'
+import { usePageContext } from '@/hooks/usePageContext'
 
 function QrCodeBorder(props) {
   return (
@@ -21,6 +22,9 @@ function QrCodeBorder(props) {
 }
 
 export function Footer() {
+  const pageData = usePageContext()
+  const links = pageData.footerNavData.menuItems.nodes
+
   return (
     <footer className="border-t border-gray-200">
       <Container>

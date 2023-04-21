@@ -1,9 +1,13 @@
 import { AppStoreLink } from '@/components/AppStoreLink'
 import { CircleBackground } from '@/components/CircleBackground'
 import { Container } from '@/components/Container'
+import { usePageContext } from '@/hooks/usePageContext'
 import Link from 'next/link'
 
-export function CallToAction({ callToAction }) {
+export function CallToAction() {
+  const pageData = usePageContext()
+  const callToAction = pageData.template.home.callToAction
+
   return (
     <section
       id="get-free-shares-today"

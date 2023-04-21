@@ -6,6 +6,7 @@ import { Button } from '@/components/Button'
 import { Container } from '@/components/Container'
 import { Logo } from '@/components/Logo'
 import { NavLinks } from '@/components/NavLinks'
+import { usePageContext } from '@/hooks/usePageContext'
 
 function MenuIcon(props) {
   return (
@@ -46,6 +47,9 @@ function MobileNavLink({ children, ...props }) {
 }
 
 export function Header() {
+  const pageData = usePageContext()
+  const links = pageData.primaryNavData.menuItems.nodes
+
   return (
     <header>
       <nav>
@@ -55,7 +59,7 @@ export function Header() {
               <Logo className="h-10 w-auto" />
             </Link>
             <div className="hidden lg:flex lg:gap-10">
-              <NavLinks />
+              <NavLinks links={links} />
             </div>
           </div>
           <div className="flex items-center gap-6">
