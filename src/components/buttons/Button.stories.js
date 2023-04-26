@@ -1,10 +1,9 @@
-import ButtonNew from '../components/buttons/ButtonNew'
+import ButtonNew from './ButtonNew'
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 export default {
-  title: 'Example/Button',
+  title: 'Buttons/Button',
   component: ButtonNew,
-  tags: ['autodocs'],
 }
 
 // More on writing stories with args: https://storybook.js.org/docs/react/writing-stories/args
