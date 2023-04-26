@@ -12,6 +12,21 @@ import useGravityForm, {
   NameFieldValue,
 } from '@/hooks/useGravityForm'
 
+export const NAME_INPUT_FIELDS = gql`
+  fragment NameInputFields on NameInputProperty {
+    id
+    name
+    autocompleteAttribute
+    customLabel
+    defaultValue
+    hasChoiceValue
+    isHidden
+    key
+    label
+    placeholder
+  }
+`
+
 export const NAME_FIELD_FIELDS = gql`
   fragment NameFieldFields on NameField {
     databaseId
@@ -19,10 +34,12 @@ export const NAME_FIELD_FIELDS = gql`
     description
     cssClass
     inputs {
-      id
-      label
+      ... on NameInputProperty {
+        ...NameInputFields
+      }
     }
   }
+  ${NAME_INPUT_FIELDS}
 `
 
 interface Props {
@@ -41,8 +58,8 @@ const AUTOCOMPLETE_ATTRIBUTES: { [key: string]: string } = {
 }
 
 export default function NameField({ field, fieldErrors }: Props) {
-  const { id, formId, type, label, description, cssClass, inputs } = field
-  const htmlId = `field_${formId}_${id}`
+  const { id, databaseId, type, label, description, cssClass, inputs } = field
+  const htmlId = `field_${databaseId}_${id}`
   const { state, dispatch } = useGravityForm()
   const fieldValue = state.find(
     (fieldValue: FieldValue) => fieldValue.id === id
@@ -77,7 +94,7 @@ export default function NameField({ field, fieldErrors }: Props) {
         <>
           <select
             name={String(prefixInput.key)}
-            id={`input_${formId}_${id}_${prefixInput.key}`}
+            id={`input_${databaseId}_${id}_${prefixInput.key}`}
             autoComplete={AUTOCOMPLETE_ATTRIBUTES.prefix}
             value={nameValues.prefix || ''}
             onChange={handleChange}
@@ -89,7 +106,7 @@ export default function NameField({ field, fieldErrors }: Props) {
               </option>
             ))}
           </select>
-          <label htmlFor={`input_${formId}_${id}_${prefixInput.key}`}>
+          <label htmlFor={`input_${databaseId}_${id}_${prefixInput.key}`}>
             {prefixInput.label}
           </label>
         </>
@@ -103,13 +120,15 @@ export default function NameField({ field, fieldErrors }: Props) {
             <input
               type="text"
               name={String(key)}
-              id={`input_${formId}_${id}_${key}`}
+              id={`input_${databaseId}_${id}_${key}`}
               placeholder={placeholder}
               autoComplete={AUTOCOMPLETE_ATTRIBUTES[key]}
               value={nameValues?.[key] || ''}
               onChange={handleChange}
             />
-            <label htmlFor={`input_${formId}_${id}_${key}`}>{inputLabel}</label>
+            <label htmlFor={`input_${databaseId}_${id}_${key}`}>
+              {inputLabel}
+            </label>
           </div>
         )
       })}

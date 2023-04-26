@@ -13,6 +13,20 @@ import useGravityForm, {
   AddressFieldValue,
 } from '@/hooks/useGravityForm'
 
+export const ADDRESS_INPUT_FIELDS = gql`
+  fragment AddressInputFields on AddressInputProperty {
+    id
+    name
+    label
+    key
+    isHidden
+    placeholder
+    defaultValue
+    customLabel
+    autocompleteAttribute
+  }
+`
+
 export const ADDRESS_FIELD_FIELDS = gql`
   fragment AddressFieldFields on AddressField {
     databaseId
@@ -20,10 +34,12 @@ export const ADDRESS_FIELD_FIELDS = gql`
     description
     cssClass
     inputs {
-      label
-      id
+      ... on AddressInputProperty {
+        ...AddressInputFields
+      }
     }
   }
+  ${ADDRESS_INPUT_FIELDS}
 `
 
 interface Props {
@@ -42,8 +58,8 @@ const AUTOCOMPLETE_ATTRIBUTES: { [key: string]: string } = {
 }
 
 export default function AddressField({ field, fieldErrors }: Props) {
-  const { id, formId, type, label, description, cssClass, inputs } = field
-  const htmlId = `field_${formId}_${id}`
+  const { id, databaseId, type, label, description, cssClass, inputs } = field
+  const htmlId = `field_${databaseId}_${id}`
   const { state, dispatch } = useGravityForm()
   const fieldValue = state.find(
     (fieldValue: FieldValue) => fieldValue.id === id
@@ -78,13 +94,15 @@ export default function AddressField({ field, fieldErrors }: Props) {
             <input
               type="text"
               name={String(key)}
-              id={`input_${formId}_${id}_${key}`}
+              id={`input_${databaseId}_${id}_${key}`}
               placeholder={placeholder}
               autoComplete={AUTOCOMPLETE_ATTRIBUTES[key]}
               value={addressValues?.[key] ?? ''}
               onChange={handleChange}
             />
-            <label htmlFor={`input_${formId}_${id}_${key}`}>{inputLabel}</label>
+            <label htmlFor={`input_${databaseId}_${id}_${key}`}>
+              {inputLabel}
+            </label>
           </div>
         )
       })}

@@ -12,6 +12,14 @@ import useGravityForm, {
   CheckboxFieldValue,
 } from '@/hooks/useGravityForm'
 
+export const CHECKBOX_INPUT_FIELDS = gql`
+  fragment CheckboxInputFields on CheckboxInputProperty {
+    id
+    name
+    label
+  }
+`
+
 export const CHECKBOX_FIELD_FIELDS = gql`
   fragment CheckboxFieldFields on CheckboxField {
     databaseId
@@ -19,13 +27,16 @@ export const CHECKBOX_FIELD_FIELDS = gql`
     description
     cssClass
     inputs {
-      id
+      ... on CheckboxInputProperty {
+        ...CheckboxInputFields
+      }
     }
     choices {
       text
       value
     }
   }
+  ${CHECKBOX_INPUT_FIELDS}
 `
 
 interface Props {
@@ -36,12 +47,20 @@ interface Props {
 const DEFAULT_VALUE: CheckboxInput[] = []
 
 export default function CheckboxField({ field, fieldErrors }: Props) {
-  const { id, formId, type, label, description, cssClass, inputs, choices } =
-    field
+  const {
+    id,
+    databaseId,
+    type,
+    label,
+    description,
+    cssClass,
+    inputs,
+    choices,
+  } = field
   const checkboxInputs =
     choices?.map((choice, index) => ({ ...choice, id: inputs?.[index]?.id })) ||
     []
-  const htmlId = `field_${formId}_${id}`
+  const htmlId = `field_${databaseId}_${id}`
   const { state, dispatch } = useGravityForm()
   const fieldValue = state.find(
     (fieldValue: FieldValue) => fieldValue.id === id
@@ -77,11 +96,11 @@ export default function CheckboxField({ field, fieldErrors }: Props) {
           <input
             type="checkbox"
             name={String(inputId)}
-            id={`input_${formId}_${id}_${inputId}`}
+            id={`input_${databaseId}_${id}_${inputId}`}
             value={String(value)}
             onChange={handleChange}
           />
-          <label htmlFor={`input_${formId}_${id}_${inputId}`}>{text}</label>
+          <label htmlFor={`input_${databaseId}_${id}_${inputId}`}>{text}</label>
         </div>
       ))}
       {description ? <p className="field-description">{description}</p> : null}

@@ -32,7 +32,7 @@ const DEFAULT_VALUE = ''
 export default function TextField({ field, fieldErrors }: Props) {
   const {
     id,
-    formId,
+    databaseId,
     type,
     label,
     description,
@@ -40,7 +40,7 @@ export default function TextField({ field, fieldErrors }: Props) {
     isRequired,
     placeholder,
   } = field
-  const htmlId = `field_${formId}_${id}`
+  const htmlId = `field_${databaseId}_${id}`
   const { state, dispatch } = useGravityForm()
   const fieldValue = state.find(
     (fieldValue: FieldValue) => fieldValue.id === id

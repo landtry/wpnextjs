@@ -10,9 +10,9 @@ import useGravityForm from '@/hooks/useGravityForm'
 import GravityFormsField from './GravityFormsField'
 
 const SUBMIT_FORM = gql`
-  mutation submitForm($formId: Int!, $fieldValues: [FieldValuesInput]) {
+  mutation submitForm($databaseId: Int!, $fieldValues: [FieldValuesInput]) {
     submitGravityFormsForm(
-      input: { formId: $formId, fieldValues: $fieldValues }
+      input: { databaseId: $databaseId, fieldValues: $fieldValues }
     ) {
       entryId
       errors {
@@ -44,7 +44,7 @@ export default function GravityFormsForm({ form }: Props) {
 
     submitForm({
       variables: {
-        formId: form.formId,
+        databaseId: form.databaseId,
         fieldValues: state,
       },
     }).catch((error) => {

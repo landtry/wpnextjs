@@ -11,6 +11,18 @@ import useGravityForm, {
   EmailFieldValue,
 } from '@/hooks/useGravityForm'
 
+export const EMAIL_INPUT_FIELDS = gql`
+  fragment EmailInputFields on EmailInputProperty {
+    id
+    name
+    autocompleteAttribute
+    customLabel
+    defaultValue
+    label
+    placeholder
+  }
+`
+
 export const EMAIL_FIELD_FIELDS = gql`
   fragment EmailFieldFields on EmailField {
     databaseId
@@ -19,7 +31,13 @@ export const EMAIL_FIELD_FIELDS = gql`
     cssClass
     isRequired
     placeholder
+    inputs {
+      ... on EmailInputProperty {
+        ...EmailInputFields
+      }
+    }
   }
+  ${EMAIL_INPUT_FIELDS}
 `
 
 interface Props {
@@ -32,7 +50,7 @@ const DEFAULT_VALUE = ''
 export default function EmailField({ field, fieldErrors }: Props) {
   const {
     id,
-    formId,
+    databaseId,
     type,
     label,
     description,
@@ -40,7 +58,7 @@ export default function EmailField({ field, fieldErrors }: Props) {
     isRequired,
     placeholder,
   } = field
-  const htmlId = `field_${formId}_${id}`
+  const htmlId = `field_${databaseId}_${id}`
   const { state, dispatch } = useGravityForm()
   const fieldValue = state.find(
     (fieldValue: FieldValue) => fieldValue.id === id

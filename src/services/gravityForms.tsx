@@ -16,9 +16,9 @@ import { TIME_FIELD_FIELDS } from '@/components/gravityFormFields/TimeField'
 import { WEBSITE_FIELD_FIELDS } from '@/components/gravityFormFields/WebsiteField'
 
 const GET_FORM = gql`
-  query getForm($formId: ID!) {
-    gfForm(id: $formId, idType: DATABASE_ID) {
-      formId
+  query getForm($databaseId: ID!) {
+    gfForm(id: $databaseId, idType: DATABASE_ID) {
+      databaseId
       title
       description
       button {
@@ -87,11 +87,11 @@ const GET_FORM = gql`
 `
 
 export default async function getGravityForm(
-  formId: number
+  databaseId: number
 ): Promise<GravityFormsForm | undefined> {
   const result = await apolloClient.query({
     query: GET_FORM,
-    variables: { formId },
+    variables: { databaseId },
   })
 
   return result?.data?.gravityFormsForm

@@ -32,8 +32,8 @@ interface Props {
 const DEFAULT_VALUE = ''
 
 export default function RadioField({ field, fieldErrors }: Props) {
-  const { id, formId, type, label, description, cssClass, choices } = field
-  const htmlId = `field_${formId}_${id}`
+  const { id, databaseId, type, label, description, cssClass, choices } = field
+  const htmlId = `field_${databaseId}_${id}`
   const { state, dispatch } = useGravityForm()
   const fieldValue = state.find(
     (fieldValue: FieldValue) => fieldValue.id === id
@@ -64,11 +64,13 @@ export default function RadioField({ field, fieldErrors }: Props) {
             <input
               type="radio"
               name={String(id)}
-              id={`choice_${formId}_${id}_${inputValue}`}
+              id={`choice_${databaseId}_${id}_${inputValue}`}
               value={inputValue}
               onChange={handleChange}
             />
-            <label htmlFor={`choice_${formId}_${id}_${value}`}>{text}</label>
+            <label htmlFor={`choice_${databaseId}_${id}_${value}`}>
+              {text}
+            </label>
           </div>
         )
       })}

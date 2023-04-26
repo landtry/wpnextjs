@@ -11,6 +11,17 @@ import useGravityForm, {
   StringFieldValue,
 } from '@/hooks/useGravityForm'
 
+export const DATE_INPUT_FIELDS = gql`
+  fragment DateInputFields on DateInputProperty {
+    id
+    placeholder
+    label
+    defaultValue
+    customLabel
+    autocompleteAttribute
+  }
+`
+
 export const DATE_FIELD_FIELDS = gql`
   fragment DateFieldFields on DateField {
     databaseId
@@ -19,7 +30,13 @@ export const DATE_FIELD_FIELDS = gql`
     cssClass
     isRequired
     placeholder
+    inputs {
+      ... on DateInputProperty {
+        ...DateInputFields
+      }
+    }
   }
+  ${DATE_INPUT_FIELDS}
 `
 
 interface Props {
@@ -32,7 +49,7 @@ const DEFAULT_VALUE = ''
 export default function DateField({ field, fieldErrors }: Props) {
   const {
     id,
-    formId,
+    databaseId,
     type,
     label,
     description,
@@ -40,7 +57,7 @@ export default function DateField({ field, fieldErrors }: Props) {
     isRequired,
     placeholder,
   } = field
-  const htmlId = `field_${formId}_${id}`
+  const htmlId = `field_${databaseId}_${id}`
   const { state, dispatch } = useGravityForm()
   const fieldValue = state.find(
     (fieldValue: FieldValue) => fieldValue.id === id

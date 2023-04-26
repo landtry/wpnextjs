@@ -29,8 +29,9 @@ interface Props {
 const DEFAULT_VALUE = ''
 
 export default function TimeField({ field, fieldErrors }: Props) {
-  const { id, formId, type, label, description, cssClass, isRequired } = field
-  const htmlId = `field_${formId}_${id}`
+  const { id, databaseId, type, label, description, cssClass, isRequired } =
+    field
+  const htmlId = `field_${databaseId}_${id}`
   const { state, dispatch } = useGravityForm()
   const fieldValue = state.find(
     (fieldValue: FieldValue) => fieldValue.id === id
