@@ -1,4 +1,6 @@
 import { cva, type VariantProps } from 'cva'
+import Link from 'next/link'
+import { forwardRef } from 'react'
 
 /**
  * Styles
@@ -37,25 +39,28 @@ const ButtonStyles = cva(
 /**
  * Types
  */
-export type ButtonBasePropss = VariantProps<typeof ButtonStyles>
-export interface ButtonProps extends ButtonBasePropss {
+export type ButtonBaseProps = VariantProps<typeof ButtonStyles>
+export interface ButtonProps extends ButtonBaseProps {
   className: string
+  href: string
+  children: React.ReactNode
 }
 
 /**
  * Primary UI component for user interaction
  */
-export default function Button({
-  color,
-  fullWidth,
-  size,
-  className,
-  ...props
-}: ButtonProps) {
+const ButtonLink = forwardRef<HTMLAnchorElement, ButtonProps>(function Button(
+  { color, fullWidth, size, href, className, ...props }: ButtonProps,
+  ref
+) {
   return (
-    <button
+    <Link
+      ref={ref}
+      href={href}
       className={ButtonStyles({ color, fullWidth, size, className })}
       {...props}
     />
   )
-}
+})
+
+export default ButtonLink
