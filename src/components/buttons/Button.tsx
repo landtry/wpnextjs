@@ -45,7 +45,7 @@ export interface ButtonProps extends ButtonBasePropss {
 /**
  * Primary UI component for user interaction
  */
-export default function ButtonNew({
+export default function Button({
   color,
   fullWidth,
   size,
