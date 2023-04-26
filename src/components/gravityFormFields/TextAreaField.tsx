@@ -13,8 +13,7 @@ import useGravityForm, {
 
 export const TEXT_AREA_FIELD_FIELDS = gql`
   fragment TextAreaFieldFields on TextAreaField {
-    id
-    formId
+    databaseId
     label
     description
     cssClass

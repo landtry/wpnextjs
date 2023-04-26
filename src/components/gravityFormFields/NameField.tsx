@@ -14,19 +14,13 @@ import useGravityForm, {
 
 export const NAME_FIELD_FIELDS = gql`
   fragment NameFieldFields on NameField {
-    id
-    formId
+    databaseId
     label
     description
     cssClass
     inputs {
-      key
+      id
       label
-      placeholder
-      choices {
-        text
-        value
-      }
     }
   }
 `

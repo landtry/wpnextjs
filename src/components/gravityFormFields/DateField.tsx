@@ -13,8 +13,7 @@ import useGravityForm, {
 
 export const DATE_FIELD_FIELDS = gql`
   fragment DateFieldFields on DateField {
-    id
-    formId
+    databaseId
     label
     description
     cssClass

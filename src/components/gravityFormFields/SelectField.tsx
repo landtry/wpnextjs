@@ -13,8 +13,7 @@ import useGravityForm, {
 
 export const SELECT_FIELD_FIELDS = gql`
   fragment SelectFieldFields on SelectField {
-    id
-    formId
+    databaseId
     label
     description
     cssClass

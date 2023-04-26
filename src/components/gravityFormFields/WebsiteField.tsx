@@ -13,8 +13,7 @@ import useGravityForm, {
 
 export const WEBSITE_FIELD_FIELDS = gql`
   fragment WebsiteFieldFields on WebsiteField {
-    id
-    formId
+    databaseId
     label
     description
     cssClass

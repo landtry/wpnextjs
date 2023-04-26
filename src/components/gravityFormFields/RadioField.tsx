@@ -13,8 +13,7 @@ import useGravityForm, {
 
 export const RADIO_FIELD_FIELDS = gql`
   fragment RadioFieldFields on RadioField {
-    id
-    formId
+    databaseId
     label
     description
     cssClass

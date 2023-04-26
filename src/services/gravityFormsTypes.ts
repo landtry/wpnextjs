@@ -2641,7 +2641,7 @@ export type FormField = {
   /** The ID of the form this field belongs to. */
   formId: Scalars['Int'];
   /** Field ID. */
-  id: Scalars['Int'];
+  databaseId: Scalars['Int'];
   /** The type of field to be displayed. */
   type: Scalars['String'];
 };

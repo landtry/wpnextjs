@@ -72,9 +72,9 @@ export default function GravityFormsForm({ form }: Props) {
     <form method="post" onSubmit={handleSubmit}>
       {formFields.map((field) => (
         <GravityFormsField
-          key={field?.id}
+          key={field?.databaseId}
           field={field as FormField}
-          fieldErrors={getFieldErrors(Number(field?.id))}
+          fieldErrors={getFieldErrors(Number(field?.databaseId))}
         />
       ))}
       {error ? <p className="error-message">{error.message}</p> : null}

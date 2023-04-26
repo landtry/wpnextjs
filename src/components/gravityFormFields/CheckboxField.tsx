@@ -14,8 +14,7 @@ import useGravityForm, {
 
 export const CHECKBOX_FIELD_FIELDS = gql`
   fragment CheckboxFieldFields on CheckboxField {
-    id
-    formId
+    databaseId
     label
     description
     cssClass

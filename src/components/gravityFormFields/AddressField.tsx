@@ -15,15 +15,13 @@ import useGravityForm, {
 
 export const ADDRESS_FIELD_FIELDS = gql`
   fragment AddressFieldFields on AddressField {
-    id
-    formId
+    databaseId
     label
     description
     cssClass
     inputs {
-      key
       label
-      placeholder
+      id
     }
   }
 `
