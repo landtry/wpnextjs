@@ -16,13 +16,12 @@ const LabelStyles = cva('mb-2 block text-sm font-semibold text-gray-900', {
 export type LabelBasePropss = VariantProps<typeof LabelStyles>
 export interface LabelProps extends LabelBasePropss {
   className?: string
-  id: string
   children?: ReactNode
 }
 
 /**
  * Primary UI component for user interaction
  */
-export default function Label({ className, id, ...props }: LabelProps) {
-  return <label htmlFor={id} className={LabelStyles({})} {...props} />
+export default function Label({ className, ...props }: LabelProps) {
+  return <label className={LabelStyles({})} {...props} />
 }

@@ -1,5 +1,5 @@
 import { cva, type VariantProps } from 'cva'
-import { ChangeEventHandler } from 'react'
+import { ChangeEventHandler, ForwardedRef, forwardRef } from 'react'
 import Label from './Label'
 
 /**
@@ -21,12 +21,10 @@ export type TextFieldBasePropss = VariantProps<typeof TextFieldStyles>
 export interface TextFieldProps extends TextFieldBasePropss {
   className?: string
   label?: string | null
-  id: string
   type?: string
   placeholder?: string
   name?: string
   autoComplete?: string
-  value?: string
   required?: boolean
   onChange?: ChangeEventHandler
 }
@@ -34,17 +32,16 @@ export interface TextFieldProps extends TextFieldBasePropss {
 /**
  * Primary UI component for user interaction
  */
-export default function TextField({
-  label,
-  id,
-  type = 'text',
-  className,
-  ...props
-}: TextFieldProps) {
+export const TextField = forwardRef(function TextField(
+  { label, type = 'text', className, ...props }: TextFieldProps,
+  ref: ForwardedRef<HTMLInputElement>
+) {
   return (
     <div className={className}>
-      {label && <Label id={id}>{label}</Label>}
-      <input id={id} type={type} {...props} className={TextFieldStyles({})} />
+      {label && <Label>{label}</Label>}
+      <input ref={ref} type={type} className={TextFieldStyles({})} {...props} />
     </div>
   )
-}
+})
+
+export default TextField

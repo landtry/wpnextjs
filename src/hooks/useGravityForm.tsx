@@ -10,7 +10,6 @@ import {
   AddressInput,
   EmailInput,
   NameInput,
-  CheckboxInput,
 } from '@/services/gravityFormsTypes'
 
 export interface FieldValue {
@@ -19,10 +18,6 @@ export interface FieldValue {
 
 export interface AddressFieldValue extends FieldValue {
   addressValues: AddressInput
-}
-
-export interface CheckboxFieldValue extends FieldValue {
-  checkboxValues: CheckboxInput[]
 }
 
 export interface EmailFieldValue extends FieldValue {
@@ -43,7 +38,6 @@ export interface StringFieldValues extends FieldValue {
 
 export type FieldValueUnion =
   | AddressFieldValue
-  | CheckboxFieldValue
   | EmailFieldValue
   | NameFieldValue
   | StringFieldValue
@@ -56,7 +50,6 @@ interface Action {
 
 export enum ACTION_TYPES {
   updateAddressFieldValue = 'updateAddressFieldValue',
-  updateCheckboxFieldValue = 'updateCheckboxFieldValue',
   updateDateFieldValue = 'updateDateFieldValue',
   updateEmailFieldValue = 'updateEmailFieldValue',
   updateMultiSelectFieldValue = 'updateMultiSelectFieldValue',
@@ -78,10 +71,6 @@ function reducer(state: FieldValueUnion[], action: Action) {
     case ACTION_TYPES.updateAddressFieldValue: {
       const { id, addressValues } = action.fieldValue as AddressFieldValue
       return [...getOtherFieldValues(id), { id, addressValues }]
-    }
-    case ACTION_TYPES.updateCheckboxFieldValue: {
-      const { id, checkboxValues } = action.fieldValue as CheckboxFieldValue
-      return [...getOtherFieldValues(id), { id, checkboxValues }]
     }
     case ACTION_TYPES.updateEmailFieldValue: {
       const { id, emailValues } = action.fieldValue as EmailFieldValue
