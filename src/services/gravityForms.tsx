@@ -18,6 +18,7 @@ import { WEBSITE_FIELD_FIELDS } from '@/components/gravityFormFields/WebsiteFiel
 const GET_FORM = gql`
   query getForm($databaseId: ID!) {
     gfForm(id: $databaseId, idType: DATABASE_ID) {
+      id
       databaseId
       title
       description
@@ -32,6 +33,7 @@ const GET_FORM = gql`
         nodes {
           id
           type
+          visibility
           ... on AddressField {
             ...AddressFieldFields
           }
@@ -94,5 +96,5 @@ export default async function getGravityForm(
     variables: { databaseId },
   })
 
-  return result?.data?.gravityFormsForm
+  return result?.data?.gfForm
 }

@@ -1,5 +1,6 @@
 import { cva, type VariantProps } from 'cva'
 import Label from './Label'
+import { ChangeEventHandler, ReactNode } from 'react'
 
 /**
  * Styles
@@ -18,10 +19,14 @@ const SelectFieldStyles = cva(
  */
 export type SelectFieldBasePropss = VariantProps<typeof SelectFieldStyles>
 export interface SelectFieldProps extends SelectFieldBasePropss {
-  className: string
-  label: string
+  className?: string
+  label?: string | null
   id: string
-  type: string
+  children?: ReactNode
+  name?: string
+  required?: boolean
+  value?: string
+  onChange?: ChangeEventHandler
 }
 
 /**
@@ -30,7 +35,6 @@ export interface SelectFieldProps extends SelectFieldBasePropss {
 export default function SelectField({
   label,
   id,
-  type = 'text',
   className,
   ...props
 }: SelectFieldProps) {

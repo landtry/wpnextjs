@@ -8,13 +8,14 @@ import {
 
 import useGravityForm from '@/hooks/useGravityForm'
 import GravityFormsField from './GravityFormsField'
+import Button from '../buttons/Button'
 
 const SUBMIT_FORM = gql`
-  mutation submitForm($databaseId: Int!, $fieldValues: [FieldValuesInput]) {
-    submitGravityFormsForm(
-      input: { databaseId: $databaseId, fieldValues: $fieldValues }
-    ) {
-      entryId
+  mutation SubmitForm($databaseId: ID!, $fieldValues: [FormFieldValuesInput]!) {
+    submitGfForm(input: { id: $databaseId, fieldValues: $fieldValues }) {
+      confirmation {
+        message
+      }
       errors {
         id
         message
@@ -41,6 +42,8 @@ export default function GravityFormsForm({ form }: Props) {
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
     if (loading) return
+
+    console.log(state)
 
     submitForm({
       variables: {
@@ -69,7 +72,7 @@ export default function GravityFormsForm({ form }: Props) {
   }
 
   return (
-    <form method="post" onSubmit={handleSubmit}>
+    <form method="post" onSubmit={handleSubmit} className="flex flex-col gap-4">
       {formFields.map((field) => (
         <GravityFormsField
           key={field?.databaseId}
@@ -78,9 +81,15 @@ export default function GravityFormsForm({ form }: Props) {
         />
       ))}
       {error ? <p className="error-message">{error.message}</p> : null}
-      <button type="submit" disabled={loading}>
+      <Button
+        type="submit"
+        disabled={loading}
+        fullWidth
+        size={'xl'}
+        className="mt-4"
+      >
         {form?.button?.text || 'Submit'}
-      </button>
+      </Button>
     </form>
   )
 }

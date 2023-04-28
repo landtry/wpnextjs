@@ -41,9 +41,9 @@ const ButtonStyles = cva(
  */
 export type ButtonBaseProps = VariantProps<typeof ButtonStyles>
 export interface ButtonProps extends ButtonBaseProps {
-  className: string
+  className?: string
   href: string
-  children: React.ReactNode
+  children?: React.ReactNode
 }
 
 /**

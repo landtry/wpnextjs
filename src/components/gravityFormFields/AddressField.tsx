@@ -58,11 +58,11 @@ const AUTOCOMPLETE_ATTRIBUTES: { [key: string]: string } = {
 }
 
 export default function AddressField({ field, fieldErrors }: Props) {
-  const { id, databaseId, type, label, description, cssClass, inputs } = field
-  const htmlId = `field_${databaseId}_${id}`
+  const { databaseId, type, label, description, cssClass, inputs } = field
+  const htmlId = `field_${databaseId}`
   const { state, dispatch } = useGravityForm()
   const fieldValue = state.find(
-    (fieldValue: FieldValue) => fieldValue.id === id
+    (fieldValue: FieldValue) => fieldValue.databaseId === databaseId
   ) as AddressFieldValue | undefined
   const addressValues = fieldValue?.addressValues || DEFAULT_VALUE
 
@@ -73,7 +73,7 @@ export default function AddressField({ field, fieldErrors }: Props) {
     dispatch({
       type: ACTION_TYPES.updateAddressFieldValue,
       fieldValue: {
-        id,
+        databaseId,
         addressValues: newAddressValues,
       },
     })
@@ -94,7 +94,7 @@ export default function AddressField({ field, fieldErrors }: Props) {
             <input
               type="text"
               name={String(key)}
-              id={`input_${databaseId}_${id}_${key}`}
+              id={`input_${databaseId}_${databaseId}_${key}`}
               placeholder={placeholder}
               autoComplete={AUTOCOMPLETE_ATTRIBUTES[key]}
               value={addressValues?.[key] ?? ''}

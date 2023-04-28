@@ -10,6 +10,7 @@ import useGravityForm, {
   FieldValue,
   StringFieldValue,
 } from '@/hooks/useGravityForm'
+import TextareaField from '../form/TextareaField'
 
 export const TEXT_AREA_FIELD_FIELDS = gql`
   fragment TextAreaFieldFields on TextAreaField {
@@ -29,32 +30,38 @@ interface Props {
 const DEFAULT_VALUE = ''
 
 export default function TextAreaField({ field, fieldErrors }: Props) {
-  const { id, databaseId, type, label, description, cssClass, isRequired } =
-    field
-  const htmlId = `field_${databaseId}_${id}`
+  const { databaseId, type, label, description, cssClass, isRequired } = field
+  const htmlId = `field_${databaseId}`
   const { state, dispatch } = useGravityForm()
   const fieldValue = state.find(
-    (fieldValue: FieldValue) => fieldValue.id === id
+    (fieldValue: FieldValue) => fieldValue.id === databaseId
   ) as StringFieldValue | undefined
   const value = fieldValue?.value || DEFAULT_VALUE
 
+  function handleChange(
+    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) {
+    dispatch({
+      type: ACTION_TYPES.updateTextAreaFieldValue,
+      fieldValue: {
+        id: databaseId,
+        value: event.target.value,
+      },
+    })
+  }
+
   return (
     <div className={`gfield gfield-${type} ${cssClass}`.trim()}>
-      <label htmlFor={htmlId}>{label}</label>
-      <textarea
-        name={String(id)}
+      <label htmlFor={htmlId} className="sr-only">
+        {label}
+      </label>
+      <TextareaField
+        name={String(databaseId)}
+        label={label}
         id={htmlId}
         required={Boolean(isRequired)}
         value={value}
-        onChange={(event) => {
-          dispatch({
-            type: ACTION_TYPES.updateTextAreaFieldValue,
-            fieldValue: {
-              id,
-              value: event.target.value,
-            },
-          })
-        }}
+        onChange={handleChange}
       />
       {description ? <p className="field-description">{description}</p> : null}
       {fieldErrors?.length

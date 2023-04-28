@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { AnimatePresence, motion } from 'framer-motion'
-import ButtonNew from './buttons/ButtonNew'
 
 export function NavLinks({ links }) {
   let [hoveredIndex, setHoveredIndex] = useState(null)

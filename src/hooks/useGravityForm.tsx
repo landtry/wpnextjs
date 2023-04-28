@@ -95,6 +95,10 @@ function reducer(state: FieldValueUnion[], action: Action) {
       const { id, nameValues } = action.fieldValue as NameFieldValue
       return [...getOtherFieldValues(id), { id, nameValues }]
     }
+    case ACTION_TYPES.updateEmailFieldValue: {
+      const { id, emailValues } = action.fieldValue as EmailFieldValue
+      return [...getOtherFieldValues(id), { id, emailValues }]
+    }
     case ACTION_TYPES.updateDateFieldValue:
     case ACTION_TYPES.updatePhoneFieldValue:
     case ACTION_TYPES.updateRadioFieldValue:

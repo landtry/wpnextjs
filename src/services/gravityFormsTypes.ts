@@ -2319,8 +2319,6 @@ export type EmailField = FormField & {
   errorMessage?: Maybe<Scalars['String']>
   /** The ID of the form this field belongs to. */
   databaseId: Scalars['Int']
-  /** Field ID. */
-  id: Scalars['Int']
   /** Assigns a name to this field so that it can be populated dynamically via this input name. Only applicable when allowsPrepopulate is set to 1. */
   inputName?: Maybe<Scalars['String']>
   /** An array containing the the individual properties for each element of the field. */
@@ -3318,6 +3316,8 @@ export enum IdTypeEnum {
 /** Gravity Forms input property. */
 export type InputProperty = {
   __typename?: 'InputProperty'
+  /** A string used for autoComplete attribute on text inputs. */
+  autocompleteAttribute?: string
   /** The custom label for the input. When set, this is used in place of the label. */
   customLabel?: Maybe<Scalars['String']>
   /** The default value to be displayed/chosen in the input field. */
@@ -4350,8 +4350,6 @@ export type NameField = FormField & {
   errorMessage?: Maybe<Scalars['String']>
   /** The ID of the form this field belongs to. */
   databaseId: Scalars['Int']
-  /** Field ID. */
-  id: Scalars['Int']
   /**
    * Assigns a name to this field so that it can be populated dynamically via this input name. Only applicable when allowsPrepopulate is set to 1.
    * @deprecated This property is not associated with the Gravity Forms NameField type. Please use `inputs { name }` instead.
@@ -4409,6 +4407,8 @@ export type NameInput = {
 /** An array containing the the individual properties for each element of the name field. */
 export type NameInputProperty = {
   __typename?: 'NameInputProperty'
+  /** A string used for autoComplete attribute on text inputs. */
+  autocompleteAttribute?: string
   /** This array only exists when the Prefix field is used. It holds the prefix options that display in the drop down. These have been chosen in the admin. */
   choices?: Maybe<Array<Maybe<ChoiceProperty>>>
   /** The custom label for the input. When set, this is used in place of the label. */
@@ -8963,8 +8963,6 @@ export type SelectField = FormField & {
   errorMessage?: Maybe<Scalars['String']>
   /** The ID of the form this field belongs to. */
   databaseId: Scalars['Int']
-  /** Field ID. */
-  id: Scalars['Int']
   /** Assigns a name to this field so that it can be populated dynamically via this input name. Only applicable when allowsPrepopulate is set to 1. */
   inputName?: Maybe<Scalars['String']>
   /** Determines if the field requires the user to enter a value. 1 marks the field as required, 0 marks the field as not required. Fields marked as required will prevent the form from being submitted if the user has not entered a value in it. */
@@ -9701,8 +9699,6 @@ export type TextAreaField = FormField & {
   errorMessage?: Maybe<Scalars['String']>
   /** The ID of the form this field belongs to. */
   databaseId: Scalars['Int']
-  /** Field ID. */
-  id: Scalars['Int']
   /** Assigns a name to this field so that it can be populated dynamically via this input name. Only applicable when allowsPrepopulate is set to 1. */
   inputName?: Maybe<Scalars['String']>
   /** Determines if the field requires the user to enter a value. 1 marks the field as required, 0 marks the field as not required. Fields marked as required will prevent the form from being submitted if the user has not entered a value in it. */

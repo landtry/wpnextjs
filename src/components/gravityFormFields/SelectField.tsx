@@ -1,4 +1,5 @@
 import { gql } from '@apollo/client'
+import SelectInput from '@/components/form/SelectField'
 
 import {
   SelectField as SelectFieldType,
@@ -11,6 +12,9 @@ import useGravityForm, {
   StringFieldValue,
 } from '@/hooks/useGravityForm'
 
+/**
+ * GraphQL Queries
+ */
 export const SELECT_FIELD_FIELDS = gql`
   fragment SelectFieldFields on SelectField {
     databaseId
@@ -26,54 +30,75 @@ export const SELECT_FIELD_FIELDS = gql`
   }
 `
 
+/**
+ * Types
+ */
 interface Props {
   field: SelectFieldType
   fieldErrors: FieldError[]
 }
 
+/**
+ * Primary UI component for user interaction
+ */
 export default function SelectField({ field, fieldErrors }: Props) {
+  // get field values
   const {
-    id,
-    databaseId,
-    type,
-    label,
-    description,
-    cssClass,
-    isRequired,
-    defaultValue,
     choices,
+    cssClass,
+    databaseId,
+    defaultValue,
+    description,
+    isRequired,
+    label,
+    type,
+    visibility,
   } = field
-  const htmlId = `field_${databaseId}_${id}`
+  const htmlId = `field_${databaseId}`
+
+  // handle input state
   const { state, dispatch } = useGravityForm()
   const fieldValue = state.find(
-    (fieldValue: FieldValue) => fieldValue.id === id
+    (fieldValue: FieldValue) => fieldValue.id === databaseId
   ) as StringFieldValue | undefined
   const value = fieldValue?.value || String(defaultValue)
 
+  // handle input change
+  function handleChange(
+    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) {
+    dispatch({
+      type: ACTION_TYPES.updateSelectFieldValue,
+      fieldValue: {
+        id: databaseId,
+        value: event.target.value,
+      },
+    })
+  }
+
+  // Do not render if field is not visible
+  if (visibility !== 'VISIBLE') return null
+
+  // Render email field component
   return (
     <div className={`gfield gfield-${type} ${cssClass}`.trim()}>
-      <label htmlFor={htmlId}>{label}</label>
-      <select
-        name={String(id)}
+      <label htmlFor={htmlId} className="sr-only">
+        {label}
+      </label>
+      <SelectInput
+        name={String(databaseId)}
         id={htmlId}
         required={Boolean(isRequired)}
+        label={label}
         value={value}
-        onChange={(event) => {
-          dispatch({
-            type: ACTION_TYPES.updateSelectFieldValue,
-            fieldValue: {
-              id,
-              value: event.target.value,
-            },
-          })
-        }}
+        onChange={handleChange}
       >
         {choices?.map((choice) => (
           <option key={choice?.value || ''} value={choice?.value || ''}>
             {choice?.text || ''}
           </option>
         ))}
-      </select>
+      </SelectInput>
       {description ? <p className="field-description">{description}</p> : null}
       {fieldErrors?.length
         ? fieldErrors.map((fieldError) => (

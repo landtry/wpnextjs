@@ -4,8 +4,10 @@ import Link from 'next/link'
 import { AuthLayout } from '@/components/AuthLayout'
 import { Button } from '@/components/Button'
 import { SelectField, TextField } from '@/components/Fields'
+import getGravityForm from '@/services/gravityForms'
+import GravityForm from '@/components/gravityForm/GravityForm'
 
-export default function Register() {
+export default function Register({ form }) {
   return (
     <>
       <Head>
@@ -23,7 +25,7 @@ export default function Register() {
           </>
         }
       >
-        <form>
+        {/* <form>
           <div className="grid grid-cols-2 gap-6">
             <TextField
               label="First name"
@@ -74,8 +76,17 @@ export default function Register() {
           <Button type="submit" color="cyan" className="mt-8 w-full">
             Get started today
           </Button>
-        </form>
+        </form> */}
+        <GravityForm form={form} />
       </AuthLayout>
     </>
   )
+}
+
+export async function getStaticProps() {
+  const form = await getGravityForm(2)
+
+  return {
+    props: { form },
+  }
 }

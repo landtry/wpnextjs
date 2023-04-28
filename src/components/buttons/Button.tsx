@@ -1,4 +1,5 @@
 import { cva, type VariantProps } from 'cva'
+import { ReactNode } from 'react'
 
 /**
  * Styles
@@ -39,7 +40,10 @@ const ButtonStyles = cva(
  */
 export type ButtonBasePropss = VariantProps<typeof ButtonStyles>
 export interface ButtonProps extends ButtonBasePropss {
-  className: string
+  className?: string
+  children?: ReactNode
+  type?: 'button' | 'submit' | 'reset'
+  disabled?: boolean
 }
 
 /**

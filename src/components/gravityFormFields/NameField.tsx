@@ -12,6 +12,11 @@ import useGravityForm, {
   NameFieldValue,
 } from '@/hooks/useGravityForm'
 
+import TextField from '../form/TextField'
+
+/**
+ * GraphQL queries
+ */
 export const NAME_INPUT_FIELDS = gql`
   fragment NameInputFields on NameInputProperty {
     id
@@ -42,60 +47,74 @@ export const NAME_FIELD_FIELDS = gql`
   ${NAME_INPUT_FIELDS}
 `
 
+/**
+ * Types
+ */
 interface Props {
   field: NameFieldType
   fieldErrors: FieldError[]
 }
 
+/**
+ * Constants
+ */
 const DEFAULT_VALUE: NameInput = {}
 
-const AUTOCOMPLETE_ATTRIBUTES: { [key: string]: string } = {
-  prefix: 'honorific-prefix',
-  first: 'given-name',
-  middle: 'additional-name',
-  last: 'family-name',
-  suffix: 'honorific-suffix',
-}
-
+/**
+ * Primary UI component for user interaction
+ */
 export default function NameField({ field, fieldErrors }: Props) {
-  const { id, databaseId, type, label, description, cssClass, inputs } = field
-  const htmlId = `field_${databaseId}_${id}`
+  // get field values
+  const { cssClass, databaseId, description, inputs, label, type, visibility } =
+    field
+  const htmlId = `field_${databaseId}`
+
+  // handle input state
   const { state, dispatch } = useGravityForm()
   const fieldValue = state.find(
-    (fieldValue: FieldValue) => fieldValue.id === id
+    (fieldValue: FieldValue) => fieldValue.id === databaseId
   ) as NameFieldValue | undefined
   const nameValues = fieldValue?.nameValues || DEFAULT_VALUE
 
-  const prefixInput = inputs?.find((input) => input?.key === 'prefix')
-  const otherInputs = inputs?.filter((input) => input?.key !== 'prefix') || []
-
+  // handle input change
   function handleChange(
     event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) {
     const { name, value } = event.target
     const newNameValues = { ...nameValues, [name]: value }
 
+    // Update field value with new name values
     dispatch({
       type: ACTION_TYPES.updateNameFieldValue,
       fieldValue: {
-        id,
+        id: databaseId,
         nameValues: newNameValues,
       },
     })
   }
 
+  // Filter inputs to get prefix, first, middle, last, and suffix inputs
+  const prefixInput = inputs?.find((input) => input?.key === 'prefix')
+  const otherInputs = inputs?.filter((input) => input?.key !== 'prefix') || []
+
+  // Do not render if field is not visible
+  if (visibility !== 'VISIBLE') return null
+
+  // Render name field component
   return (
     <fieldset
       id={htmlId}
       className={`gfield gfield-${type} ${cssClass}`.trim()}
     >
-      <legend>{label}</legend>
-      {prefixInput ? (
+      <legend className="sr-only">{label}</legend>
+
+      {/* Render prefix input */}
+      {prefixInput && !prefixInput.isHidden ? (
         <>
           <select
             name={String(prefixInput.key)}
-            id={`input_${databaseId}_${id}_${prefixInput.key}`}
-            autoComplete={AUTOCOMPLETE_ATTRIBUTES.prefix}
+            id={`input_${databaseId}_${prefixInput.key}`}
+            autoComplete={prefixInput.autocompleteAttribute}
             value={nameValues.prefix || ''}
             onChange={handleChange}
           >
@@ -106,32 +125,44 @@ export default function NameField({ field, fieldErrors }: Props) {
               </option>
             ))}
           </select>
-          <label htmlFor={`input_${databaseId}_${id}_${prefixInput.key}`}>
+          <label htmlFor={`input_${databaseId}_${prefixInput.key}`}>
             {prefixInput.label}
           </label>
         </>
       ) : null}
-      {otherInputs.map((input) => {
-        const key = input?.key as keyof NameInput
-        const inputLabel = input?.label || ''
-        const placeholder = input?.placeholder || ''
-        return (
-          <div key={key}>
-            <input
-              type="text"
-              name={String(key)}
-              id={`input_${databaseId}_${id}_${key}`}
-              placeholder={placeholder}
-              autoComplete={AUTOCOMPLETE_ATTRIBUTES[key]}
-              value={nameValues?.[key] || ''}
-              onChange={handleChange}
-            />
-            <label htmlFor={`input_${databaseId}_${id}_${key}`}>
-              {inputLabel}
-            </label>
-          </div>
-        )
-      })}
+
+      <div className="flex justify-between gap-2">
+        {/* Render text inputs for first, middle, last, and suffix */}
+        {otherInputs.map((input) => {
+          const id = input?.id
+          const key = input?.key as keyof NameInput
+          const inputLabel = input?.label || ''
+          const placeholder = input?.placeholder || ''
+          const isHidden = input?.isHidden || ''
+          const autoCompleteAttribute = input?.autocompleteAttribute
+
+          // Do not render if field is hidden
+          if (isHidden) return null
+
+          // Render input
+          return (
+            <div key={id} className="flex-1">
+              <TextField
+                label={inputLabel}
+                type="text"
+                name={String(key)}
+                id={`input_${id}`}
+                placeholder={placeholder}
+                autoComplete={autoCompleteAttribute}
+                value={nameValues?.[key] || ''}
+                onChange={handleChange}
+              />
+            </div>
+          )
+        })}
+      </div>
+
+      {/* Render description and error messages */}
       {description ? <p className="field-description">{description}</p> : null}
       {fieldErrors?.length
         ? fieldErrors.map((fieldError) => (

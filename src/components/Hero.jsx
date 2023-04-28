@@ -17,7 +17,6 @@ import logoHuffpost from '@/images/logos/huffpost.svg'
 import logoTechcrunch from '@/images/logos/techcrunch.svg'
 import logoWired from '@/images/logos/wired.svg'
 import { usePageContext } from '@/hooks/usePageContext'
-import ButtonNew from './buttons/ButtonNew'
 
 function BackgroundIllustration(props) {
   let id = useId()

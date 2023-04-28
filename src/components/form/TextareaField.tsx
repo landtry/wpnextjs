@@ -1,5 +1,6 @@
 import { cva, type VariantProps } from 'cva'
 import Label from './Label'
+import { ChangeEventHandler } from 'react'
 
 /**
  * Styles
@@ -18,9 +19,13 @@ const TextareaFieldStyles = cva(
  */
 export type TextareaFieldBasePropss = VariantProps<typeof TextareaFieldStyles>
 export interface TextareaFieldProps extends TextareaFieldBasePropss {
-  className: string
-  label: string
+  className?: string
+  label?: string | null
   id: string
+  name?: string
+  required?: boolean
+  value?: string
+  onChange: ChangeEventHandler
 }
 
 /**

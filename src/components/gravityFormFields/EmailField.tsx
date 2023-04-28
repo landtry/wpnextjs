@@ -10,7 +10,11 @@ import useGravityForm, {
   FieldValue,
   EmailFieldValue,
 } from '@/hooks/useGravityForm'
+import TextField from '../form/TextField'
 
+/**
+ * GraphQl Queries
+ */
 export const EMAIL_INPUT_FIELDS = gql`
   fragment EmailInputFields on EmailInputProperty {
     id
@@ -39,53 +43,73 @@ export const EMAIL_FIELD_FIELDS = gql`
   }
   ${EMAIL_INPUT_FIELDS}
 `
-
+/**
+ * Types
+ */
 interface Props {
   field: EmailFieldType
   fieldErrors: FieldError[]
 }
 
+/**
+ * Constants
+ */
 const DEFAULT_VALUE = ''
 
+/**
+ * Primary UI component for user interaction
+ */
 export default function EmailField({ field, fieldErrors }: Props) {
+  // get field values
   const {
-    id,
     databaseId,
     type,
     label,
     description,
     cssClass,
     isRequired,
+    visibility,
     placeholder,
   } = field
-  const htmlId = `field_${databaseId}_${id}`
+  const htmlId = `field_${databaseId}`
+
+  // handle input state
   const { state, dispatch } = useGravityForm()
   const fieldValue = state.find(
-    (fieldValue: FieldValue) => fieldValue.id === id
+    (fieldValue: FieldValue) => fieldValue.id === databaseId
   ) as EmailFieldValue | undefined
   const value = fieldValue?.emailValues?.value || DEFAULT_VALUE
 
+  // handle input change
+  function handleChange(
+    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) {
+    dispatch({
+      type: ACTION_TYPES.updateEmailFieldValue,
+      fieldValue: {
+        id: databaseId,
+        emailValues: {
+          value: event.target.value,
+        },
+      },
+    })
+  }
+
+  // Do not render if field is not visible
+  if (visibility !== 'VISIBLE') return null
+
+  // Render email field component
   return (
     <div className={`gfield gfield-${type} ${cssClass}`.trim()}>
-      <label htmlFor={htmlId}>{label}</label>
-      <input
+      <TextField
+        label={label}
         type="email"
-        name={String(id)}
+        name={String(databaseId)}
         id={htmlId}
         placeholder={placeholder || ''}
         required={Boolean(isRequired)}
         value={value}
-        onChange={(event) => {
-          dispatch({
-            type: ACTION_TYPES.updateEmailFieldValue,
-            fieldValue: {
-              id,
-              emailValues: {
-                value: event.target.value,
-              },
-            },
-          })
-        }}
+        onChange={handleChange}
       />
       {description ? <p className="field-description">{description}</p> : null}
       {fieldErrors?.length
