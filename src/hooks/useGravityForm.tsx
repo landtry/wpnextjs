@@ -6,23 +6,10 @@ import {
   useReducer,
 } from 'react'
 
-import {
-  AddressInput,
-  EmailInput,
-  NameInput,
-  CheckboxInput,
-} from '@/services/gravityFormsTypes'
+import { EmailInput, NameInput } from '@/services/gravityFormsTypes'
 
 export interface FieldValue {
   id: number
-}
-
-export interface AddressFieldValue extends FieldValue {
-  addressValues: AddressInput
-}
-
-export interface CheckboxFieldValue extends FieldValue {
-  checkboxValues: CheckboxInput[]
 }
 
 export interface EmailFieldValue extends FieldValue {
@@ -42,8 +29,6 @@ export interface StringFieldValues extends FieldValue {
 }
 
 export type FieldValueUnion =
-  | AddressFieldValue
-  | CheckboxFieldValue
   | EmailFieldValue
   | NameFieldValue
   | StringFieldValue
@@ -55,19 +40,11 @@ interface Action {
 }
 
 export enum ACTION_TYPES {
-  updateAddressFieldValue = 'updateAddressFieldValue',
-  updateCheckboxFieldValue = 'updateCheckboxFieldValue',
-  updateDateFieldValue = 'updateDateFieldValue',
   updateEmailFieldValue = 'updateEmailFieldValue',
-  updateMultiSelectFieldValue = 'updateMultiSelectFieldValue',
   updateNameFieldValue = 'updateNameFieldValue',
-  updatePhoneFieldValue = 'updatePhoneFieldValue',
-  updateRadioFieldValue = 'updateRadioFieldValue',
   updateSelectFieldValue = 'updateSelectFieldValue',
   updateTextAreaFieldValue = 'updateTextAreaFieldValue',
   updateTextFieldValue = 'updateTextFieldValue',
-  updateTimeFieldValue = 'updateTimeFieldValue',
-  updateWebsiteFieldValue = 'updateWebsiteFieldValue',
 }
 
 function reducer(state: FieldValueUnion[], action: Action) {
@@ -75,41 +52,36 @@ function reducer(state: FieldValueUnion[], action: Action) {
     state.filter((fieldValue) => fieldValue.id !== id)
 
   switch (action.type) {
-    case ACTION_TYPES.updateAddressFieldValue: {
-      const { id, addressValues } = action.fieldValue as AddressFieldValue
-      return [...getOtherFieldValues(id), { id, addressValues }]
-    }
-    case ACTION_TYPES.updateCheckboxFieldValue: {
-      const { id, checkboxValues } = action.fieldValue as CheckboxFieldValue
-      return [...getOtherFieldValues(id), { id, checkboxValues }]
-    }
     case ACTION_TYPES.updateEmailFieldValue: {
       const { id, emailValues } = action.fieldValue as EmailFieldValue
       return [...getOtherFieldValues(id), { id, emailValues }]
     }
-    case ACTION_TYPES.updateMultiSelectFieldValue: {
-      const { id, values } = action.fieldValue as StringFieldValues
-      return [...getOtherFieldValues(id), { id, values }]
-    }
+
     case ACTION_TYPES.updateNameFieldValue: {
       const { id, nameValues } = action.fieldValue as NameFieldValue
       return [...getOtherFieldValues(id), { id, nameValues }]
     }
+
     case ACTION_TYPES.updateEmailFieldValue: {
       const { id, emailValues } = action.fieldValue as EmailFieldValue
       return [...getOtherFieldValues(id), { id, emailValues }]
     }
-    case ACTION_TYPES.updateDateFieldValue:
-    case ACTION_TYPES.updatePhoneFieldValue:
-    case ACTION_TYPES.updateRadioFieldValue:
-    case ACTION_TYPES.updateSelectFieldValue:
-    case ACTION_TYPES.updateTextAreaFieldValue:
-    case ACTION_TYPES.updateTextFieldValue:
-    case ACTION_TYPES.updateTimeFieldValue:
-    case ACTION_TYPES.updateWebsiteFieldValue: {
+
+    case ACTION_TYPES.updateSelectFieldValue: {
       const { id, value } = action.fieldValue as StringFieldValue
       return [...getOtherFieldValues(id), { id, value }]
     }
+
+    case ACTION_TYPES.updateTextAreaFieldValue: {
+      const { id, value } = action.fieldValue as StringFieldValue
+      return [...getOtherFieldValues(id), { id, value }]
+    }
+
+    case ACTION_TYPES.updateTextFieldValue: {
+      const { id, value } = action.fieldValue as StringFieldValue
+      return [...getOtherFieldValues(id), { id, value }]
+    }
+
     default:
       throw new Error(
         `Field value update operation not supported: ${action.type}.`

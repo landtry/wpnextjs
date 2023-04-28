@@ -1,6 +1,8 @@
 import { gql } from '@apollo/client'
 
-// Menus
+/**
+ * Menu Queries
+ */
 export const GET_MENU_DATA = gql`
   query GetMenuData($slug: String!) {
     menus(where: { slug: $slug }) {
@@ -16,7 +18,9 @@ export const GET_MENU_DATA = gql`
   }
 `
 
-// Seo fragment
+/**
+ * Seo Fragments
+ */
 export const SEO_FIELDS = gql`
   fragment SeoFields on Page {
     seo {
@@ -25,7 +29,9 @@ export const SEO_FIELDS = gql`
   }
 `
 
-// Template fragments
+/**
+ * Template Fragments
+ */
 export const HOME_TEMPLATE_FIELDS = gql`
   fragment HomeTemplateFields on Template_Home {
     home {
@@ -105,19 +111,18 @@ export const HOME_TEMPLATE_FIELDS = gql`
   }
 `
 
-export const UPCOMING_EVENTS_TEMPLATE_FIELDS = gql`
-  fragment UpcomingEventsTemplateFields on Template_UpcomingEvents {
-    upcomingEvents {
-      hero {
-        bgImage {
-          sourceUrl
-        }
-      }
+export const CONTACT_TEMPLATE_FIELDS = gql`
+  fragment ContactTemplateFields on Template_Contact {
+    contact {
+      heading
+      gravityFormId
     }
   }
 `
 
-//Page queries
+/**
+ * Page Queries
+ */
 export const GET_All_PAGES = gql`
   query getAllPages {
     pages(after: "0") {
@@ -131,6 +136,7 @@ export const GET_All_PAGES = gql`
 export const GET_PAGE_DATA = gql`
   ${SEO_FIELDS}
   ${HOME_TEMPLATE_FIELDS}
+  ${CONTACT_TEMPLATE_FIELDS}
 
   query getPageData($uri: String!) {
     nodeByUri(uri: $uri) {
@@ -140,6 +146,9 @@ export const GET_PAGE_DATA = gql`
           templateName
           ... on Template_Home {
             ...HomeTemplateFields
+          }
+          ... on Template_Contact {
+            ...ContactTemplateFields
           }
         }
       }
